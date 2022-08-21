@@ -8,7 +8,7 @@ export interface ICardAdmin {
   label: string;
 }
 
-interface ISubject {
+export interface ISubject {
   classId: number;
   name: string;
   id: number;
@@ -22,6 +22,8 @@ interface ISchedule {
   id: number;
   subject?: ISubject;
   length: number;
+  weekday: number;
+  teacher: ITeacher;
 }
 
 interface IYears {
@@ -71,3 +73,36 @@ export interface IModal {
   title: string;
   inputs: IInput[];
 }
+
+export interface ILink {
+  name: string;
+  link: string;
+  icon: string;
+}
+
+export interface IWarning {
+  title: string;
+  text: string;
+  id?: number;
+}
+
+export interface IStudent {
+  name: string;
+  email: string;
+  cpf: string;
+  rg: string;
+  password: string;
+  course_id: number;
+  id: number;
+}
+
+export interface IStudentInCourse {
+  course: ICourse;
+  id: number;
+  period: number;
+  ra: string;
+  user: IUser;
+}
+// export interface ILinks {
+//   links: ILink[];
+// }

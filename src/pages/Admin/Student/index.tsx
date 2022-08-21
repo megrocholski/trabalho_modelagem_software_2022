@@ -1,67 +1,75 @@
-import { Box, Button, Container, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+  Typography,
+} from "@mui/material";
 import React, { useEffect, useState } from "react";
 import DrawerMenu from "../../../components/DrawerMenu";
 import Section from "../../../components/Section";
+import FaceIcon from "@mui/icons-material/Face";
 import { colors } from "../../../content/theme";
-import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
 import { useForm } from "react-hook-form";
 import api from "../../../services/api";
-import { ITeacher } from "../../../content/interface";
+import {
+  ICourse,
+  IStudent,
+  IStudentInCourse,
+} from "../../../content/interface";
 
-export const Teachers = () => {
+export const AdminStudent = () => {
   const { handleSubmit, register } = useForm();
-  const [teachers, setTeachers] = useState<ITeacher[]>([]);
-
+  const [courses, setCourses] = useState<ICourse[]>([]);
+  const [students, setStudents] = useState<IStudentInCourse[]>([]);
+  useEffect(() => {
+    async function handleGetCourses() {
+      try {
+        const token = localStorage.getItem("@SAU:User:token");
+        const config = { headers: { Authorization: `Bearer ${token}` } };
+        const resp = await api.get("/admin/courses", config);
+        console.log(resp.data);
+        setCourses(resp.data.content);
+        const res = await api.get("/admin/students", config);
+        console.log(res.data);
+        setStudents(res.data.content);
+      } catch (error) {}
+    }
+    handleGetCourses();
+  }, [students]);
   const onSubmit = async (data: any) => {
     const token = localStorage.getItem("@SAU:User:token");
     const config = { headers: { Authorization: `Bearer ${token}` } };
     const res = await api.post(
-      "/admin/teacher",
+      "/admin/student",
       {
         name: data.name,
         email: data.email,
         cpf: data.cpf,
         rg: data.rg,
         password: data.password,
+        course_id: data.course_id,
       },
       config
     );
     console.log(res.data);
   };
-
-  useEffect(() => {
-    async function handleGetTeachers() {
-      try {
-        const token = localStorage.getItem("@SAU:User:token");
-        const config = { headers: { Authorization: `Bearer ${token}` } };
-        const resp = await api.get("/admin/teachers", config);
-        console.log(resp.data);
-        setTeachers(resp.data);
-      } catch (error) {}
-    }
-    handleGetTeachers();
-  }, [teachers]);
-
   return (
     <Box
       sx={{
         display: "flex",
         flexDirection: "row",
-        backgroundColor: colors.dark,
         height: "100vh",
+        backgroundColor: colors.dark,
       }}
     >
       <DrawerMenu />
       <Box sx={{ p: 3 }}>
-        <Section title="Novo(a) Professor(a)" icon={PeopleOutlinedIcon} />
-        <Box
-          sx={{
-            padding: 2,
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "space-between",
-          }}
-        >
+        <Section title="Novo(a) Aluno(a)" icon={FaceIcon} />
+        <Box sx={{ my: 2 }}>
           <form onSubmit={handleSubmit(onSubmit)}>
             <TextField
               label="Nome"
@@ -144,6 +152,39 @@ export const Teachers = () => {
                 mr: 2,
               }}
             />
+            <Box minWidth={120} sx={{ mr: 2, width: "100%" }}>
+              <FormControl
+                sx={{
+                  width: "100%",
+                  "& .MuiOutlinedInput-root:hover": {
+                    borderColor: colors.blue,
+                  },
+                }}
+              >
+                <InputLabel id="label-course" sx={{ color: colors.white }}>
+                  Curso
+                </InputLabel>
+                <Select
+                  labelId="label-course"
+                  label="Curso"
+                  {...register("course_id", { required: true })}
+                  sx={{
+                    input: { color: "white" },
+                    "& fieldset": { borderColor: "white" },
+                    "& label": { color: "white" },
+                    "& .MuiOutlinedInput-root:hover input": {
+                      borderColor: colors.blue,
+                    },
+                    color: colors.white,
+                    width: "100%",
+                  }}
+                >
+                  {courses.map((course, i) => (
+                    <MenuItem value={course.id}>{course.name}</MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Box>
             <Button
               type="submit"
               variant="contained"
@@ -163,21 +204,21 @@ export const Teachers = () => {
               Adicionar
             </Button>
           </form>
-          <Box sx={{ my: 2 }}>
-            {teachers.map((teacher) => (
-              <Box>
-                <Typography
-                  sx={{
-                    color: colors.white,
-                    borderBottom: 1,
-                    borderColor: colors.blue,
-                  }}
-                >
-                  {teacher.user.name} - {teacher.rf} - {teacher.user.email}
-                </Typography>
-              </Box>
-            ))}
-          </Box>
+        </Box>
+        <Box>
+          {students.map((student) => (
+            <Box>
+              <Typography
+                sx={{
+                  color: colors.white,
+                  borderBottom: 1,
+                  borderColor: colors.blue,
+                }}
+              >
+                {student.user.name} - {student.ra} - {student.course.name}
+              </Typography>
+            </Box>
+          ))}
         </Box>
       </Box>
     </Box>

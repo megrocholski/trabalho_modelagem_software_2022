@@ -26,20 +26,24 @@ export const AuthProvider: React.FC<React.ReactNode> = ({ children }: any) => {
 
   const navigate = useNavigate();
   const signIn = useCallback(async ({ email, password }: SignInCredentials) => {
-    const response = await api
-      .post("/user/signin", {
-        email,
-        password,
-      })
-      .finally(() => navigate("/home"));
+    const response = await api.post("/user/signin", {
+      email,
+      password,
+    });
+    //   .finally(() => navigate("/home"));
     //   .finally(<Navigate to="/home" replace />);
     //   .then();
     const { content } = response.data;
 
-    console.log(content.token);
+    console.log(content);
     localStorage.setItem("@SAU:User:token", content.token);
 
-    // localStorage.setItem("@SAU:User:user", JSON.stringify(content.user));
+    localStorage.setItem("@SAU:User:user", JSON.stringify(content.user));
+
+    console.log(response);
+    if (response.data.error == false) {
+      navigate("admin/home");
+    }
     // localStorage.setItem("@SAU:User:refreshToken", refreshToken);
 
     // api.defaults.headers.authorization = `Bearer ${content.token}`;

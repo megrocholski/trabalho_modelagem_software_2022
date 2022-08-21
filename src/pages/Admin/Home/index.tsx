@@ -15,7 +15,6 @@ const Dashboard: React.FC = () => {
       <Section title="Início" icon={HomeOutlinedIcon} />
       <Box
         mt={3}
-        mb={10}
         sx={{
           display: "flex",
           flexDirection: "column",

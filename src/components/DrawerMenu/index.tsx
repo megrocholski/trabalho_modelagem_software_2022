@@ -22,10 +22,12 @@ import { styled, useTheme, Theme, CSSObject } from "@mui/material/styles";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import { red } from "@mui/material/colors";
-import { links } from "../../content/drawer";
-import { Link } from "react-router-dom";
+import { linksAdmin, linksTeacher } from "../../content/drawer";
+import { Link, useNavigate } from "react-router-dom";
 // import { Link, useNavigate } from "react-router-dom";
 import { colors } from "../../content/theme";
+import { useAuth } from "../../hooks/auth";
+import { ILink } from "../../content/interface";
 const drawerWidth = 240;
 
 const openedMixin = (theme: Theme): CSSObject => ({
@@ -111,8 +113,22 @@ const AppBarMenu: React.FC = () => {
 
 const DrawerMenu = () => {
   const [open, setOpen] = useState(false);
+  const { signOut } = useAuth();
 
-  //   const navigate = useNavigate()
+  const navigate = useNavigate();
+  let Suser = localStorage.getItem("@SAU:User:user");
+  if (!Suser) {
+    Suser = "";
+  }
+  const user = JSON.parse(Suser);
+  let links: any;
+  if(user.type == 1){
+
+  }else if(user.type == 2){
+	links = linksTeacher;
+  }else{
+	links = linksAdmin;
+  }
 
   const isActiveDrawerItem = (itemName: string) => {
     if (window.location.pathname == "/") return itemName == "/" ? true : false;
@@ -120,6 +136,15 @@ const DrawerMenu = () => {
       if (itemName != "/") {
         return window.location.href.indexOf(itemName) != -1 ? true : false;
       }
+    }
+  };
+
+  const handleClick = (i: any) => {
+    console.log(i);
+    if (i == "Logout") {
+      console.log("SIM");
+      signOut();
+      navigate("/", { replace: true });
     }
   };
 
@@ -157,11 +182,12 @@ const DrawerMenu = () => {
         </DrawerHeader>
         {/* <Divider /> */}
         <List sx={{ backgroundColor: colors.dark, height: "100%" }}>
-          {links.map((l, i) => (
+          {linksAdmin.map((l, i) => (
             <Box key={l.name}>
               <Link to={l.link} style={{ textDecoration: "none" }}>
                 <ListItemButton
-                  //   onClick={() => navigate(l.link)}
+                  onClick={() => handleClick(l.name)}
+                  // onClick={handleClick(l.name)}
                   sx={{
                     minHeight: 48,
                     justifyContent: open ? "initial" : "center",

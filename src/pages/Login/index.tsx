@@ -35,9 +35,9 @@ export const Login = () => {
     const res = await signIn({ email: data.email, password: data.password });
     console.log(res);
   };
-  if (localStorage.getItem("@SAU:User:token")) {
-    return <Navigate to="/home" replace />;
-  } else {
+//   if (localStorage.getItem("@SAU:User:token") != undefined) {
+//     return <Navigate to="/home" replace />;
+//   } else {
     return (
       <Container
         sx={{
@@ -185,4 +185,4 @@ export const Login = () => {
       </Container>
     );
   }
-};
+// };

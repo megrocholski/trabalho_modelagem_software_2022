@@ -19,6 +19,7 @@ import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 
 import { Link } from "react-router-dom";
 import api from "../../services/api";
+import { ModalEdit } from "../ModalEdit";
 
 export const ListComp = (props: ICourses) => {
   const [secondary, setSecondary] = React.useState(-1);
@@ -194,8 +195,13 @@ export const ListComp = (props: ICourses) => {
                                             width: "100%",
                                           }}
                                           secondaryAction={
-                                            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                                              <IconButton
+                                            <Box
+                                              sx={{
+                                                display: "flex",
+                                                justifyContent: "space-between",
+                                              }}
+                                            >
+                                              {/* <IconButton
                                                 edge="end"
                                                 sx={{
                                                   padding: 1,
@@ -211,7 +217,16 @@ export const ListComp = (props: ICourses) => {
                                                 <EditOutlinedIcon
                                                   sx={{ color: colors.white }}
                                                 />
-                                              </IconButton>
+                                              </IconButton> */}
+                                              {/* <ModalEdit
+                                                idCourse={course.id}
+                                                year={year.id}
+                                                subject={schedule.subject}
+                                                idTeacher={schedule.teacher.id}
+                                                idWeekday={schedule.weekday}
+                                                idHour={schedule.daytime}
+                                                classroom={schedule.classroom}
+                                              /> */}
                                               <IconButton
                                                 edge="end"
                                                 sx={{

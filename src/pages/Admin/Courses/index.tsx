@@ -34,7 +34,15 @@ export const Courses = () => {
       }}
     >
       <DrawerMenu />
-      <Container sx={{ mt: 5, height: "100vh", backgroundColor: colors.dark }}>
+      <Box
+        sx={{
+          p: 3,
+          height: "100%",
+          minHeight: "100vh",
+          width: "100%",
+          backgroundColor: colors.dark,
+        }}
+      >
         <Section title="Cursos" icon={BookOutlinedIcon} />
         <Box
           mt={3}
@@ -48,9 +56,9 @@ export const Courses = () => {
           }}
         >
           <ListComp courses={courses} title="" />
-          <ModalComp/>
+          <ModalComp />
         </Box>
-      </Container>
+      </Box>
     </Box>
   );
 };
