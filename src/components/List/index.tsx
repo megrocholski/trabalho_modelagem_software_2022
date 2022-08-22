@@ -260,7 +260,7 @@ export const ListComp = (props: ICourses) => {
                                     )}
                                   </List>
                                   <Link
-                                    to="/subject"
+                                    to="/admin/subject"
                                     style={{ textDecoration: "none" }}
                                   >
                                     <Button

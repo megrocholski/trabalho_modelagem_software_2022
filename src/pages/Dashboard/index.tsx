@@ -21,11 +21,11 @@ export const Home = () => {
     Suser = "";
   }
   const user = JSON.parse(Suser);
-  if(user.type == 1){
-	navigate('student/home/');
-  }else if(user.type == 2){
-	navigate('teacher/home/');
-  }
+//   if(user.type == 1){
+// 	navigate('student/home/');
+//   }else if(user.type == 2){
+// 	navigate('teacher/home/');
+//   }
   return (
     <Box sx={{ backgroundColor: colors.dark }}>
       <DrawerMenu />
